@@ -10,10 +10,13 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Release|x64 = Release|x64
+		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{FA5C9385-5F1E-4FE3-9C0F-8D7B2C03704B}.Release|x64.ActiveCfg = Release|x64
 		{FA5C9385-5F1E-4FE3-9C0F-8D7B2C03704B}.Release|x64.Build.0 = Release|x64
+		{FA5C9385-5F1E-4FE3-9C0F-8D7B2C03704B}.Release|x86.ActiveCfg = Release|x86
+		{FA5C9385-5F1E-4FE3-9C0F-8D7B2C03704B}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
