@@ -12,6 +12,7 @@ namespace PerfTest
 	/// The observation has been that for either configuration, SingleLineTest and MultiLineTest show significantly different timings.
 	/// Additionally, if you turn off "Suppress JIT optimization on module load" in VS2010, you can put a breakpoint in each "for" block and see that the assembly code varies.
 	/// </remarks>
+	/// <seealso cref="http://stackoverflow.com/questions/10369421/why-does-adding-local-variables-make-net-code-slower"/>
 	class Program
 	{
 		static void Main()
@@ -20,6 +21,7 @@ namespace PerfTest
 			// You'll see that SingleLineTest and MultiLineTest now run at the same speed (almost, but not quite, as slow as MultiLineTest before).
 			// Next, uncomment the RuntimeHelpers line. You'll see that SingleLineTest speeds back up.
 			// Note that this JIT order behavior only applies to x86 (not x64).	
+			// See also: http://stackoverflow.com/questions/10406796/why-does-jit-order-affect-performance
 
 			////RuntimeHelpers.PrepareMethod(typeof(Program).GetMethod("SingleLineTest").MethodHandle);
 			////MultiLineTest();
