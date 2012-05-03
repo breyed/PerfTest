@@ -32,6 +32,8 @@ namespace PerfTest
 			MultiLineTest();
 			SingleLineTest();
 			MultiLineTest();
+
+			MoreTests.Run();
 		}
 
 		public static void SingleLineTest()
@@ -43,7 +45,7 @@ namespace PerfTest
 				count += i % 16 == 0 ? 1 : 0;
 			}
 			stopwatch.Stop();
-			Console.WriteLine("Single-line test --> Count: {0}, Time: {1}", count, stopwatch.ElapsedMilliseconds);
+			Console.WriteLine("Single-line (conditional op) --> Count: {0}, Time: {1}", count, stopwatch.ElapsedMilliseconds);
 		}
 
 		public static void MultiLineTest()
@@ -56,7 +58,84 @@ namespace PerfTest
 				count += isMultipleOf16 ? 1 : 0;
 			}
 			stopwatch.Stop();
-			Console.WriteLine("Multi-line test  --> Count: {0}, Time: {1}", count, stopwatch.ElapsedMilliseconds);
+			Console.WriteLine("Multi-line  (conditional op) --> Count: {0}, Time: {1}", count, stopwatch.ElapsedMilliseconds);
+		}
+	}
+
+	/// <summary>
+	/// Additional tests to see what happens if the conditional operator (?:) is removed from the loop body.
+	/// </summary>
+	static class MoreTests
+	{
+		public static void Run()
+		{
+			// These tests use an "if" statement.
+			IfStatementSingleLineTest();
+			IfStatementMultiLineTest();
+			IfStatementSingleLineTest();
+			IfStatementMultiLineTest();
+			IfStatementSingleLineTest();
+			IfStatementMultiLineTest();
+
+			// These tests eliminate the condition altogether, and instead use only bit math.
+			NoConditionSingleLineTest();
+			NoConditionMultiLineTest();
+			NoConditionSingleLineTest();
+			NoConditionMultiLineTest();
+			NoConditionSingleLineTest();
+			NoConditionMultiLineTest();
+		}
+
+		static void IfStatementSingleLineTest()
+		{
+			Stopwatch stopwatch = new Stopwatch();
+			stopwatch.Start();
+			uint count = 0;
+			for (uint i = 0; i < 1000000000; ++i) {
+				if (i % 16 == 0)
+					++count;
+			}
+			stopwatch.Stop();
+			Console.WriteLine("Single-line   (if statement) --> Count: {0}, Time: {1}", count, stopwatch.ElapsedMilliseconds);
+		}
+
+		static void IfStatementMultiLineTest()
+		{
+			Stopwatch stopwatch = new Stopwatch();
+			stopwatch.Start();
+			uint count = 0;
+			for (uint i = 0; i < 1000000000; ++i) {
+				var isMultipleOf16 = i % 16 == 0;
+				if (isMultipleOf16)
+					++count;
+			}
+			stopwatch.Stop();
+			Console.WriteLine("Multi-line    (if statement) --> Count: {0}, Time: {1}", count, stopwatch.ElapsedMilliseconds);
+		}
+
+		static void NoConditionSingleLineTest()
+		{
+			Stopwatch stopwatch = new Stopwatch();
+			stopwatch.Start();
+			uint count = 0;
+			for (uint i = 0; i < 1000000000; ++i) {
+				count += ~(i >> 3 | i >> 2 | i >> 1 | i) & 1;
+			}
+			stopwatch.Stop();
+			Console.WriteLine("Single-line   (no condition) --> Count: {0}, Time: {1}", count, stopwatch.ElapsedMilliseconds);
+		}
+
+		static void NoConditionMultiLineTest()
+		{
+			Stopwatch stopwatch = new Stopwatch();
+			stopwatch.Start();
+			uint count = 0;
+			for (uint i = 0; i < 1000000000; ++i) {
+				uint isMultipleOf16 = ~(i >> 3 | i >> 2 | i >> 1 | i) & 1;
+				count += isMultipleOf16;
+			}
+			stopwatch.Stop();
+			Console.WriteLine("Multi-line    (no condition) --> Count: {0}, Time: {1}", count, stopwatch.ElapsedMilliseconds);
 		}
 	}
 }
